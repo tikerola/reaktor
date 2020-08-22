@@ -8,8 +8,8 @@ let state
 
 app.set('view engine', 'ejs')
 
-//const file = path.normalize(path.join('/var/lib/dpkg', 'status'))
-const file = path.join(__dirname, 'status.txt')
+const file = path.normalize(path.join('/var/lib/dpkg', 'status'))
+//const file = path.join(__dirname, 'status.txt')
 
 
 /* Get state data */
