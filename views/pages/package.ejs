@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <%- include ('../partials/head') %>
+</head>
+
+<body class="container w-75">
+  <div class="mb-5">
+    <h1><%= packageName %></h1>
+    <div class="d-flex flex-column">
+      <div class="flex-row flex-grow-1 mr-3 p-2">
+        <p class="text-white bg-dark p-2">Description: </p>
+        <p><strong><%= packageData.description.title %></strong><br>
+          <%= packageData.description.body %></p>
+      </div>
+      <div class="flex-row flex-grow-1 mr-3 p-2">
+        <p class="text-white bg-dark p-2">Depends: </p>
+        <ul class="list-unstyled">
+          <% if (packageData.depends.length === 0) {%>
+          <li>-</li>
+          <% } %>
+          <% packageData.depends.forEach((d) => { 
+              if (d.includes('|')) { 
+                %> <li>
+            <% const pipePackages = d.split(' | ')
+            pipePackages.forEach((p, index) => {
+              const package = p.trim()
+            if (state[package]) { %>
+            <a href="/package/<%= package %>"><%= p %></a>
+            <%  } else { if (index > 0) { %> <span> | </span> <% } %>
+            <%= p %>
+            <%  }}) %>
+          </li>
+          <%  } else if (state[d]) { { %>
+          <a href="/package/<%= d %>">
+            <li><%= d %></li>
+          </a>
+          <% }} else { %>
+          <li><%= d %></li>
+          <% }}); %>
+        </ul>
+      </div>
+      <div class="flex-row flex-grow-1 mr-3 p-2">
+        <p class="text-white bg-dark p-2">Pre-Depends: </p>
+        <ul class="list-unstyled">
+          <% if (packageData['pre-depends'].length === 0) {%>
+          <li>-</li>
+          <% } %>
+          <% packageData['pre-depends'].forEach((d) => { 
+              if (d.includes('|')) { 
+                %> <li>
+            <% const pipePackages = d.split(' | ')
+            pipePackages.forEach((p, index) => {
+              const package = p.trim()
+            if (state[package]) { %>
+            <a href="/package/<%= package %>"><%= p %></a>
+            <%  } else { if (index > 0) { %> <span> | </span> <% } %>
+            <%= p %>
+            <%  }}) %>
+          </li>
+          <%  } else if (state[d]) { { %>
+          <a href="/package/<%= d %>">
+            <li><%= d %></li>
+          </a>
+          <% }} else { %>
+          <li><%= d %></li>
+          <% }}); %>
+        </ul>
+      </div>
+      <div class="flex-row flex-grow-1 mr-3 p-2">
+        <p class="text-white bg-dark p-2">Reverse-Depends: </p>
+        <ul class="list-unstyled">
+          <% if (packageData['reverse-depends'].length === 0) {%>
+          <li>-</li>
+          <% } %>
+          <% packageData['reverse-depends'].forEach(d => { %>
+          <a href="/package/<%= d %>">
+            <li><%= d %></li>
+          </a>
+          <% }); %>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <footer>
+    <%- include ('../partials/footer') %>
+  </footer>
+
+</body>
+
+</html>
