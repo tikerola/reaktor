@@ -15,6 +15,10 @@ const parseFile = async fileName => {
     state = {
       packages: ['python', 'libc6', ...],
       python: {
+        description: {
+          title: '',
+          body: ''
+        }
         depends: [],
         pre-depends: [],
         reverse-depends: []
@@ -52,8 +56,9 @@ const parseFile = async fileName => {
     if (line.startsWith('Package:')) {
       currentPackageName = parsePackageTitleLine(line, 'Package:')
       state.packages.push(currentPackageName)
-      state[currentPackageName] = {}
 
+      state[currentPackageName] = {}
+      state[currentPackageName]['description'] = {}
       state[currentPackageName]['depends'] = []
       state[currentPackageName]['pre-depends'] = []
       state[currentPackageName]['reverse-depends'] = []
@@ -66,8 +71,6 @@ const parseFile = async fileName => {
 
     else if (line.startsWith('Description:')) {
       currentDescriptionTitle = parsePackageTitleLine(line, 'Description:')
-
-      state[currentPackageName]['description'] = {}
       state[currentPackageName]['description']['title'] = currentDescriptionTitle
     }
 
@@ -81,7 +84,7 @@ const parseFile = async fileName => {
         currentDescriptionBody += line
       }
 
-      /* Line is empty so let's put the body to state */
+      /* Line is empty so let's put the body to the state and reset variables */
 
       else {
         state[currentPackageName]['description']['body'] = currentDescriptionBody.trim()
